@@ -7,6 +7,7 @@ import (
 	"log"
 	"os"
 	"strconv"
+	"time"
 
 	"github.com/Rasukarusan/go-jyuchucsv/util"
 	"github.com/spf13/cobra"
@@ -154,8 +155,9 @@ func writeRecords(num int) {
 }
 
 func createRecord(count int) []string {
-	date := util.GetDate()
-	s := util.GetRandomStr()
+	t := time.Now()
+	date := util.GetDate(t)
+	s := util.GetRandomStr(t)
 	// 動的に変更しなければならないものだけ改めて定義する
 	idxDenpyoNo := 0
 	idxJyuchuBi := 1

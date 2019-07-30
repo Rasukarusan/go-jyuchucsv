@@ -11,13 +11,11 @@ func GetHomeDir() string {
 	return usr.HomeDir
 }
 
-func GetDate() string {
+func GetDate(t time.Time) string {
 	const format = "2006/01/02 15:04"
-	t := time.Now()
 	return t.Format(format)
 }
 
-func GetRandomStr() string {
-	t := time.Now()
+func GetRandomStr(t time.Time) string {
 	return strconv.FormatInt(t.UnixNano(), 10)
 }
