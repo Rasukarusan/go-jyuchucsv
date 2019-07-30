@@ -15,7 +15,9 @@ limitations under the License.
 */
 package main
 
-import "github.com/Rasukarusan/go-jyuchucsv/cmd"
+import (
+	"github.com/Rasukarusan/go-jyuchucsv/cmd"
+)
 
 func main() {
 	cmd.Execute()
