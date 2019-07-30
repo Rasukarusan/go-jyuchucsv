@@ -1,18 +1,3 @@
-/*
-Copyright © 2019 NAME HERE <EMAIL ADDRESS>
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-*/
 package cmd
 
 import (
@@ -22,6 +7,8 @@ import (
 	"log"
 	"os"
 	"os/user"
+	"strconv"
+	"time"
 
 	"github.com/spf13/cobra"
 )
@@ -37,19 +24,9 @@ var hanyoCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(hanyoCmd)
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// hanyoCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// hanyoCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
 
-var header = []string{
+var HEADER = []string{
 	"店舗伝票番号",
 	"受注日",
 	"受注郵便番号",
@@ -91,20 +68,57 @@ var header = []string{
 	"出荷予定日",
 }
 
-var value = []string{}
-
-var CSV_PATH = getHomeDir() + "/Desktop/hanyo.csv"
-
-func main() {
-	num := question("何件のCSVを作成しますか？(数字だけ入力):")
-	fmt.Printf("%v", num)
-	createHeader()
-	createValue()
+var recordValue = []string{
+	"",
+	"",
+	"2500011",
+	"神奈川県小田原市栄町",
+	"",
+	"山田太郎",
+	"ヤマダタロウ",
+	"0465228054",
+	"test.tarou@hamee.co.jp",
+	"2500011",
+	"神奈川県小田原市栄町",
+	"",
+	"山田太郎",
+	"ヤマダタロウ",
+	"0465228054",
+	"代金引換",
+	"佐川急便",
+	"2400",
+	"120",
+	"350",
+	"200",
+	"0",
+	"0",
+	"3070",
+	"0",
+	"",
+	"",
+	"",
+	"",
+	"テスト項目選択肢",
+	"item-select-l-blue",
+	"2400",
+	"2",
+	"",
+	"0",
+	"9",
+	"",
+	"",
+	"",
 }
 
-func getHomeDir() string {
-	usr, _ := user.Current()
-	return usr.HomeDir
+var value = []string{}
+
+var CSV_PATH = Util.GetHomeDir() + "/Desktop/hanyo.csv"
+
+func main() {
+	text := question("何件のCSVを作成しますか？(数字だけ入力):")
+	writeHeader()
+	num, _ := strconv.Atoi(text)
+	writeRecords(num)
 }
 
 func question(q string) string {
@@ -115,22 +129,57 @@ func question(q string) string {
 	return text
 }
 
-func createHeader() {
+func writeHeader() {
 	file, err := os.Create(CSV_PATH)
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer file.Close()
 	writer := csv.NewWriter(file)
-	writer.Write(header)
+	writer.Write(HEADER)
 	writer.Flush()
 }
 
-func createValue() {
+func writeRecords(num int) {
 	file, err := os.OpenFile(CSV_PATH, os.O_WRONLY|os.O_APPEND, 0666)
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer file.Close()
-	fmt.Fprintln(file, "hgoehogheoge")
+	writer := csv.NewWriter(file)
+	for i := 0; i < num; i++ {
+		record := createRecord(i)
+		writer.Write(record)
+	}
+	writer.Flush()
+}
+func getHomeDir() string {
+	usr, _ := user.Current()
+	return usr.HomeDir
+}
+
+func getDate() string {
+	const format = "2006/01/02 15:04"
+	t := time.Now()
+	return t.Format(format)
+}
+
+func getRandomStr() string {
+	t := time.Now()
+	return strconv.FormatInt(t.UnixNano(), 10)
+}
+
+func createRecord(count int) []string {
+	date := getDate()
+	s := getRandomStr()
+	// 動的に変更しなければならないものだけ改めて定義する
+	idxDenpyoNo := 0
+	idxJyuchuBi := 1
+	idxJyuchuJyusyo2 := 4
+	idxHasouJyusyo2 := 11
+	recordValue[idxDenpyoNo] = fmt.Sprintf("HANYO-%s", s)
+	recordValue[idxJyuchuBi] = fmt.Sprintf("%s", date)
+	recordValue[idxJyuchuJyusyo2] = fmt.Sprintf("%s", s)
+	recordValue[idxHasouJyusyo2] = fmt.Sprintf("%s", s)
+	return recordValue
 }
