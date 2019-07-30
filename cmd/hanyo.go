@@ -6,14 +6,12 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"os/user"
 	"strconv"
-	"time"
 
+	"github.com/Rasukarusan/go-jyuchucsv/util"
 	"github.com/spf13/cobra"
 )
 
-// hanyoCmd represents the hanyo command
 var hanyoCmd = &cobra.Command{
 	Use:  "hanyo",
 	Long: `汎用店舗のCSVファイルを作成します`,
@@ -25,6 +23,8 @@ var hanyoCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(hanyoCmd)
 }
+
+var CSV_PATH = util.GetHomeDir() + "/Desktop/hanyo.csv"
 
 var HEADER = []string{
 	"店舗伝票番号",
@@ -112,8 +112,6 @@ var recordValue = []string{
 
 var value = []string{}
 
-var CSV_PATH = Util.GetHomeDir() + "/Desktop/hanyo.csv"
-
 func main() {
 	text := question("何件のCSVを作成しますか？(数字だけ入力):")
 	writeHeader()
@@ -153,25 +151,10 @@ func writeRecords(num int) {
 	}
 	writer.Flush()
 }
-func getHomeDir() string {
-	usr, _ := user.Current()
-	return usr.HomeDir
-}
-
-func getDate() string {
-	const format = "2006/01/02 15:04"
-	t := time.Now()
-	return t.Format(format)
-}
-
-func getRandomStr() string {
-	t := time.Now()
-	return strconv.FormatInt(t.UnixNano(), 10)
-}
 
 func createRecord(count int) []string {
-	date := getDate()
-	s := getRandomStr()
+	date := util.GetDate()
+	s := util.GetRandomStr()
 	// 動的に変更しなければならないものだけ改めて定義する
 	idxDenpyoNo := 0
 	idxJyuchuBi := 1
