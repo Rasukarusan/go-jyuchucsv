@@ -110,10 +110,11 @@ var recordValue = []string{
 	"",
 }
 
-var value = []string{}
-
 func main() {
 	text := question("何件のCSVを作成しますか？(数字だけ入力):")
+	if text == "" {
+		return
+	}
 	writeHeader()
 	num, _ := strconv.Atoi(text)
 	writeRecords(num)
