@@ -1,6 +1,9 @@
 package util
 
 import (
+	"bufio"
+	"fmt"
+	"os"
 	"os/user"
 	"strconv"
 	"time"
@@ -18,4 +21,12 @@ func GetDate(t time.Time) string {
 
 func GetRandomStr(t time.Time) string {
 	return strconv.FormatInt(t.UnixNano(), 10)
+}
+
+func ReadStdin(s string) string {
+	fmt.Print(s)
+	scanner := bufio.NewScanner(os.Stdin)
+	scanner.Scan()
+	text := scanner.Text()
+	return text
 }

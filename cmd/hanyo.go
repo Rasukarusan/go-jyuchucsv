@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"bufio"
 	"encoding/csv"
 	"fmt"
 	"log"
@@ -112,21 +111,14 @@ var recordValue = []string{
 }
 
 func main() {
-	text := question("何件のCSVを作成しますか？(数字だけ入力):")
+	text := util.ReadStdin("何件の受注伝票を作成しますか？(数字だけ入力):")
 	if text == "" {
 		return
 	}
 	writeHeader()
 	num, _ := strconv.Atoi(text)
 	writeRecords(num)
-}
-
-func question(q string) string {
-	fmt.Print(q)
-	scanner := bufio.NewScanner(os.Stdin)
-	scanner.Scan()
-	text := scanner.Text()
-	return text
+	fmt.Printf("%d件のCSVを作成しました。\n", num)
 }
 
 func writeHeader() {
