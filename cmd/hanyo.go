@@ -24,7 +24,9 @@ func init() {
 	rootCmd.AddCommand(hanyoCmd)
 }
 
-var CSV_PATH = util.GetHomeDir() + "/Desktop/hanyo.csv"
+var now = time.Now
+
+var csvPath = util.GetHomeDir() + "/Desktop/hanyo.csv"
 
 var HEADER = []string{
 	"店舗伝票番号",
@@ -122,7 +124,7 @@ func main() {
 }
 
 func writeHeader() {
-	file, err := os.Create(CSV_PATH)
+	file, err := os.Create(csvPath)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -133,7 +135,7 @@ func writeHeader() {
 }
 
 func writeRecords(num int) {
-	file, err := os.OpenFile(CSV_PATH, os.O_WRONLY|os.O_APPEND, 0666)
+	file, err := os.OpenFile(csvPath, os.O_WRONLY|os.O_APPEND, 0666)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -147,7 +149,7 @@ func writeRecords(num int) {
 }
 
 func createRecord(count int) []string {
-	t := time.Now()
+	t := now()
 	date := util.GetDate(t)
 	s := util.GetRandomStr(t)
 	// 動的に変更しなければならないものだけ改めて定義する
