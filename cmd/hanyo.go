@@ -113,14 +113,22 @@ var recordValue = []string{
 }
 
 func main() {
-	text := util.ReadStdin("何件の受注伝票を作成しますか？(数字だけ入力):")
-	if text == "" {
-		return
+	for {
+		fmt.Print("何件の受注伝票を作成しますか？(数字だけ入力):")
+		text := util.ReadStdin(os.Stdin)
+		if text == "" {
+			return
+		}
+		writeHeader()
+		num, err := strconv.Atoi(text)
+		if err != nil {
+			fmt.Println("\x1b[31mERROR\x1b[0m：整数を入力してください")
+			continue
+		}
+		writeRecords(num)
+		fmt.Printf("%d件のCSVを作成しました。\n", num)
+		break
 	}
-	writeHeader()
-	num, _ := strconv.Atoi(text)
-	writeRecords(num)
-	fmt.Printf("%d件のCSVを作成しました。\n", num)
 }
 
 func writeHeader() {
