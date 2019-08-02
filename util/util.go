@@ -8,17 +8,17 @@ import (
 	"time"
 )
 
-func GetHomeDir() string {
+func HomeDir() string {
 	usr, _ := user.Current()
 	return usr.HomeDir
 }
 
-func GetDate(t time.Time) string {
+func Date(t time.Time) string {
 	const format = "2006/01/02 15:04"
 	return t.Format(format)
 }
 
-func GetRandomStr(t time.Time) string {
+func UnixNanoStr(t time.Time) string {
 	return strconv.FormatInt(t.UnixNano(), 10)
 }
 

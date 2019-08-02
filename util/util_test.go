@@ -9,19 +9,19 @@ import (
 
 func TestGetDate(t *testing.T) {
 	time, _ := time.Parse("2006-01-02 15:04", "2014-12-31 18:10")
-	actual := GetDate(time)
+	actual := Date(time)
 	expected := "2014/12/31 18:10"
 	if actual != expected {
-		t.Errorf(getResult(actual, expected))
+		t.Errorf(result(actual, expected))
 	}
 }
 
 func TestGetRandomStr(t *testing.T) {
 	time, _ := time.Parse("2006-01-02 15:04", "2014-12-31 18:10")
-	actual := GetRandomStr(time)
+	actual := UnixNanoStr(time)
 	expected := "1420049400000000000"
 	if actual != expected {
-		t.Errorf(getResult(actual, expected))
+		t.Errorf(result(actual, expected))
 	}
 }
 
@@ -31,10 +31,10 @@ func TestReadStdin(t *testing.T) {
 	stdin.Write([]byte(expected + "\n"))
 	actual := ReadStdin(&stdin)
 	if actual != expected {
-		t.Errorf(getResult(actual, expected))
+		t.Errorf(result(actual, expected))
 	}
 }
 
-func getResult(actual interface{}, expected interface{}) string {
+func result(actual interface{}, expected interface{}) string {
 	return fmt.Sprintf("\nactual: (%T) %#v\nexpected: (%T) %#v", actual, actual, expected, expected)
 }
