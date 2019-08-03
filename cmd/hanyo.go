@@ -57,13 +57,13 @@ func writeRecords(num int) {
 	defer file.Close()
 	writer := csv.NewWriter(file)
 	for i := 0; i < num; i++ {
-		record := createRecord(tc, i)
+		record := createRecord(tc)
 		writer.Write(record)
 	}
 	writer.Flush()
 }
 
-func createRecord(tc util.TemplateCsv, count int) []string {
+func createRecord(tc util.TemplateCsv) []string {
 	t := now()
 	date := util.Date(t)
 	s := util.UnixNanoStr(t)

@@ -2,24 +2,25 @@ package cmd
 
 import (
 	"fmt"
-	"os"
 	"reflect"
 	"testing"
+	"time"
 
 	"github.com/Rasukarusan/go-jyuchucsv/util"
 )
 
 func TestCreateRecord(t *testing.T) {
-	dir, _ := os.Getwd()
-	var tc = util.TemplateCsv{}
-	tc.SetTemplateCsv(dir + "/../" + util.PathTemplateCsvDir + "hanyo.csv")
-	actual := createRecord(tc, 1)
-	expected := []string{""}
-	if !reflect.DeepEqual(actual, expected) {
-		t.Errorf(result(actual, expected))
+	tc := util.TemplateCsv{}
+	tc.SetTemplateCsv("test-csv-template/hanyo.csv")
+	now = func() time.Time { return time.Date(2019, 12, 31, 18, 10, 0, 0, time.Local) }
+	got := createRecord(tc)
+	want := []string{"HANYO-1577783400000000000", "2019/12/31 18:10", "1577783400000000000", "1577783400000000000"}
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf(result(got, want))
 	}
+	now = time.Now
 }
 
-func result(actual interface{}, expected interface{}) string {
-	return fmt.Sprintf("\nactual: (%T) %#v\nexpected: (%T) %#v", actual, actual, expected, expected)
+func result(got interface{}, want interface{}) string {
+	return fmt.Sprintf("\ngot: (%T) %#v\nwant: (%T) %#v", got, got, want, want)
 }
