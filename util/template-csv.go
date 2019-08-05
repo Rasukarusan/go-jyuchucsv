@@ -6,9 +6,11 @@ import (
 	"log"
 	"os"
 	"strings"
-)
 
-const PathTemplateCsvDir = "csv-template/"
+	_ "github.com/Rasukarusan/go-jyuchucsv/statik"
+
+	"github.com/rakyll/statik/fs"
+)
 
 // Recordは動的に置換したいため配列ではなく文字列にする
 type TemplateCsv struct {
@@ -18,7 +20,8 @@ type TemplateCsv struct {
 
 // テンプレートCSVを構造体にセット
 func (tc *TemplateCsv) SetTemplateCsv(templateCsvPath string) {
-	fp, err := os.Open(templateCsvPath)
+	FS, _ := fs.New()
+	fp, err := FS.Open(templateCsvPath)
 	if err != nil {
 		log.Fatal(err)
 	}

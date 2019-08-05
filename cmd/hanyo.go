@@ -30,7 +30,7 @@ var resultCsvPath = util.HomeDir() + "/Desktop/hanyo.csv"
 var tc = util.TemplateCsv{}
 
 func main() {
-	tc.SetTemplateCsv(util.PathTemplateCsvDir + "hanyo.csv")
+	tc.SetTemplateCsv("/hanyo.csv")
 	for {
 		fmt.Print("何件の受注伝票を作成しますか？(数字だけ入力):")
 		text := util.ReadStdin(os.Stdin)
